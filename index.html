@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br" ng-app="sistemaEscolar">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" type="text/css" href="style/style.css">
+        <link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.css">
+        <title>Sistemas Escolar</title>
+    </head>
+    <body ng-controller="sistemaEscolarCtrl">
+
+        <div class="jumbotron">
+            <h3>{{title}}</h3>
+
+            <input class="form-control" type="text" ng-model="criterioDeBusca" placeholder="o que você procura ?">
+
+            <table class="table celula" ng-if="alunos.length > 0">
+                <tr class="item">
+                    <th></th>
+                    <th>Matrícula</th>
+                    <th>Nome</th>
+                    <th>Telefone</th>
+                    <th>Turma</th>
+                    <th>Data de nascimento</th>
+                </tr>
+                <tr class="item" ng-class="{'selecionado negrito': elementos.selecionado}" ng-repeat="elementos in alunos | filter: criterioDeBusca | orderBy: 'matricula'">
+                    <td><input type="checkbox" ng-model="elementos.selecionado"></td>
+                    <!--<td ng-repeat="(key + value) in alunos"></td>-->
+                    <td>{{elementos.matricula}}</td>
+                    <td>{{elementos.nome}}</td>
+                    <td>{{elementos.telefone}}</td>
+                    <td>{{elementos.turma.nome | lowercase}}</td>
+                    <td>{{elementos.data | date: 'dd/MM/yyyy'}}</td>
+                </tr>
+            </table>
+            <hr>
+            <form name="contatoForm">
+                <input class="form-control inp" type="text" ng-model="contato.nome" ng-minlength="10" name="nome" placeholder="nome completo" ng-required="true">
+                <input class="form-control inp" type="text" ng-model="contato.telefone" ng-minlength="8" name="telefone" placeholder="telefone" ng-required="true">
+                <input class="form-control inp" type="date" ng-model="contato.data" name="data">
+                <select class="form-control inp" ng-model="contato.turma" ng-options="turma.nome group by turma.serie for turma in turmas | orderBy: 'nome'">
+                    <option value="">Selecione a turma do aluno</option>
+                </select>
+            </form>
+
+            <div ng-messages="contatoForm.nome.$error" class="alert alert-danger">
+                <div ng-message="required">
+                    Por favor, preencher campo nome!
+                </div>
+            </div>
+
+            <div ng-messages="contatoForm.telefone.$error" class="alert alert-danger">
+                <div ng-message="required, dirty">
+                    Por favor, preencher o campo telefone!
+                </div>
+                <div ng-message="minlength">
+                    Por favor, digite um número válido!
+                </div>
+            </div>
+
+            <button class="btn btn-primary btn-block" ng-click="adicionarContato(contato)" ng-disabled="contatoForm.$invalid">Adicionar Aluno</button>
+            <button class="btn btn-danger btn-block" ng-click="apagarAlunos(alunos)" ng-if="isAlunoSelecionado(alunos)">Apagar Aluno</button>
+            
+        </div>
+
+
+
+        <script src="lib/angular.js"></script>
+        <script src="lib/angular-messages.js"></script>
+        <script src="scripts/app.js"></script>
+        <script src="scripts/controllers/sistemaEscolarCtrl.js"></script>
+    </body>
+</html>

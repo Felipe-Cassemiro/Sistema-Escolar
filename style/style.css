@@ -1,0 +1,26 @@
+*{
+    box-sizing: border-box;
+}
+.jumbotron {
+    margin: 0 auto;
+    text-align: center;
+    width: 100%;
+    height: 120vh;
+}
+
+.btn {
+    margin-top: 1rem;
+}
+
+.selecionado {
+    background-color: yellowgreen;
+}
+
+.negrito {
+    font-weight: bold;
+}
+
+.inp {
+    margin: .3rem 0;
+}
+
